@@ -13,6 +13,6 @@ import lombok.NoArgsConstructor;
 public class CartItem {
     private Long id;
     private CartEntity cart;
-    private Long productId;
+    private String productId;
     private Long price;
 }
