@@ -1,5 +1,7 @@
 package com.example.ShoppingCart.repository;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -18,8 +20,11 @@ public class CartItemEntity {
     @Column(name = "id")
     private Long id;
 
-    @ManyToOne
+
+    @ManyToOne()
     @JoinColumn(name = "cart_id")
+    @JsonIgnore
+    @JsonBackReference
     private CartEntity cart;
 
     @Column(name = "product_id")

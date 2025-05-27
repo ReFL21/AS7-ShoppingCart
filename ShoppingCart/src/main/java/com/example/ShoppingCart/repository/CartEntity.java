@@ -1,4 +1,5 @@
 package com.example.ShoppingCart.repository;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
@@ -19,6 +20,8 @@ public class CartEntity {
     @Column(name = "user_id")
     private Long userId;
 
-    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true)
+//    @OneToMany(mappedBy = "cart", cascade = CascadeType.ALL, orphanRemoval = true, fetch = FetchType.LAZY)
+    @OneToMany(mappedBy="cart", cascade=CascadeType.ALL, fetch=FetchType.LAZY)
+    @JsonManagedReference
     private List<CartItemEntity> items;
 }

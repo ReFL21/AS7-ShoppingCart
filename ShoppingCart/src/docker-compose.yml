@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  postgres_db:
+    image: postgres:15
+    container_name: postgres_shopping
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: qwerty
+      POSTGRES_DB: shoppingCart
+    ports:
+      - "5432:5432"  # Reverted to 5432 for simplicity (use different port if needed)
+    volumes:
+      - postgres_shopping_data:/var/lib/postgresql/data
+      - ./mypostgres-init-shoppingCart:/docker-entrypoint-initdb.d/
+    networks:
+      - db-shopping-net
+
+  shopping_service:
+    image: shoppingcart-service:0.0.1
+    container_name: shopping_service_app
+    ports:
+      - "8086:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://postgres_shopping:5432/shoppingCart
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: qwerty
+    depends_on:
+      - postgres_db
+    networks:
+      - db-shopping-net
+
+volumes:
+  postgres_shopping_data:
+
+networks:
+  db-shopping-net:
+    driver: bridge
