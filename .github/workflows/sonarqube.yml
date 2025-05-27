@@ -13,13 +13,13 @@ jobs:
     steps:
       - uses: actions/checkout@v4
         with:
-          fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+          fetch-depth: 0
 
       - name: Set up JDK 21
         uses: actions/setup-java@v4
         with:
           java-version: 21
-          distribution: 'zulu'  # Or use temurin if you prefer
+          distribution: 'zulu'
 
       - name: Cache SonarQube packages
         uses: actions/cache@v4
@@ -35,8 +35,12 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle') }}
           restore-keys: ${{ runner.os }}-gradle
 
+      - name: Make gradlew executable  
+        working-directory: ShoppingCart
+        run: chmod +x ./gradlew
+
       - name: Build and analyze with SonarQube
-        working-directory: ShoppingCart  
+        working-directory: ShoppingCart
         env:
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
         run: ./gradlew build sonar --info
